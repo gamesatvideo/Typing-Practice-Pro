@@ -3,6 +3,13 @@ const words = [
     "it", "for", "not", "on", "with", "he", "as", "you", "do", "at"
 ];
 
+const keyboardKeys = [
+    "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=",
+    "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]",
+    "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
+    "z", "x", "c", "v", "b", "n", "m", ",", ".", "/"
+];
+
 let text = "";
 let wordsList = [];
 let currentWordIndex = 0;
@@ -11,8 +18,6 @@ let timer, startTime;
 let errors = 0, totalKeys = 0, duration = 60;
 
 let keyMistakes = {};
-
-const keyboard = "abcdefghijklmnopqrstuvwxyz".split("");
 
 function randomText() {
 
@@ -43,6 +48,16 @@ function startPractice() {
 
 }
 
+function speakWord(word) {
+
+    const msg = new SpeechSynthesisUtterance(word);
+    msg.rate = 0.7;
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(msg);
+
+}
+
 if (document.getElementById("typingInput")) {
 
     const settings = JSON.parse(localStorage.getItem("typingSettings"));
@@ -55,6 +70,11 @@ if (document.getElementById("typingInput")) {
         text = settings.customText;
 
     wordsList = text.split(" ");
+
+    const font = settings.font;
+
+    document.getElementById("textDisplay").style.fontFamily = font;
+    document.getElementById("typingInput").style.fontFamily = font;
 
     if (settings.hideText)
         document.getElementById("textDisplay").innerHTML = "(Hidden Text Mode)";
@@ -94,13 +114,13 @@ if (document.getElementById("typingInput")) {
 
         totalKeys++;
 
-        if (settings.hideText) return;
-
         const spans = document.querySelectorAll("#textDisplay span");
 
         for (let i = 0; i < spans.length; i++) {
 
             let char = typed[i];
+
+            spans[i].classList.remove("current");
 
             if (char == null) {
 
@@ -115,12 +135,19 @@ if (document.getElementById("typingInput")) {
             }
             else {
 
-                if (!spans[i].classList.contains("wrong")) {
-                    errors++;
-                    trackMistake(char);
-                }
-
                 spans[i].className = "wrong";
+
+                if (!spans[i].dataset.error) {
+
+                    errors++;
+
+                    let expectedKey = spans[i].innerText.toLowerCase();
+
+                    trackMistake(expectedKey);
+
+                    spans[i].dataset.error = "1";
+
+                }
 
             }
 
@@ -141,7 +168,6 @@ function renderText() {
     text.split("").forEach((char, i) => {
 
         let span = document.createElement("span");
-
         span.innerText = char;
 
         if (i === 0) span.classList.add("current");
@@ -152,15 +178,11 @@ function renderText() {
 
 }
 
-function speakWord(word) {
+function trackMistake(key) {
 
-    const msg = new SpeechSynthesisUtterance(word);
+    if (!key) return;
 
-    msg.rate = 0.7;
-
-    speechSynthesis.cancel();
-
-    speechSynthesis.speak(msg);
+    keyMistakes[key] = (keyMistakes[key] || 0) + 1;
 
 }
 
@@ -183,9 +205,7 @@ function updateStats() {
     document.getElementById("wpm").textContent = isFinite(wpm) ? wpm : 0;
 
     if (elapsed >= duration) {
-
         finishTest();
-
     }
 
 }
@@ -212,17 +232,19 @@ function finishTest() {
 
     localStorage.setItem("typingResult", JSON.stringify(resultData));
 
+    let history = JSON.parse(localStorage.getItem("typingHistory")) || [];
+
+    history.push({
+        date: new Date().toLocaleString(),
+        accuracy: accuracy,
+        errors: errors,
+        wpm: document.getElementById("wpm").textContent,
+        kpm: document.getElementById("kpm").textContent
+    });
+
+    localStorage.setItem("typingHistory", JSON.stringify(history));
+
     window.location = "result.html";
-
-}
-
-function trackMistake(char) {
-
-    char = char?.toLowerCase();
-
-    if (!keyboard.includes(char)) return;
-
-    keyMistakes[char] = (keyMistakes[char] || 0) + 1;
 
 }
 
@@ -230,25 +252,45 @@ if (document.getElementById("heatmap")) {
 
     const data = JSON.parse(localStorage.getItem("typingResult"));
 
-    document.getElementById("result").innerText = "Accuracy: " + data.accuracy + "% | Errors: " + data.errors;
+    document.getElementById("result").innerText =
+        "Accuracy: " + data.accuracy + "% | Errors: " + data.errors;
 
     const map = document.getElementById("heatmap");
 
-    keyboard.forEach(k => {
+    keyboardKeys.forEach(key => {
 
         let div = document.createElement("div");
-
         div.className = "key";
+        div.textContent = key;
 
-        div.textContent = k;
-
-        let val = data.keyMistakes[k] || 0;
+        let val = data.keyMistakes[key] || 0;
 
         if (val > 5) div.classList.add("hot");
         else if (val > 2) div.classList.add("mid");
         else if (val > 0) div.classList.add("low");
 
         map.appendChild(div);
+
+    });
+
+}
+
+if (document.getElementById("history")) {
+
+    const history = JSON.parse(localStorage.getItem("typingHistory")) || [];
+
+    const container = document.getElementById("history");
+
+    history.slice().reverse().forEach(h => {
+
+        let div = document.createElement("div");
+
+        div.className = "historyItem";
+
+        div.innerHTML =
+            h.date + " | WPM:" + h.wpm + " | Accuracy:" + h.accuracy + "% | Errors:" + h.errors;
+
+        container.appendChild(div);
 
     });
 
