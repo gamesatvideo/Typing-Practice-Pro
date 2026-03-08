@@ -1,0 +1,136 @@
+@font-face {
+    font-family: "Avaice";
+    src: url("Avaice Font.ttf") format("truetype");
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #111827, #1f2937);
+    font-family: "JetBrains Mono", monospace;
+    color: white;
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+    min-height: 100vh;
+}
+
+.container {
+    width: 900px;
+    background: #1f2937;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .5);
+}
+
+h1 {
+    text-align: center;
+    margin-top: 0;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+select,
+button {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    font-size: 15px;
+}
+
+button {
+    background: #3b82f6;
+    color: white;
+    cursor: pointer;
+}
+
+textarea {
+    width: 100%;
+    height: 90px;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    margin-top: 10px;
+}
+
+#textDisplay {
+    margin-top: 15px;
+    background: #111827;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 24px;
+    line-height: 38px;
+    min-height: 140px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+#typingInput {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+}
+
+.correct {
+    color: #22c55e
+}
+
+.wrong {
+    color: #ef4444;
+    background: #3f1d1d
+}
+
+.current {
+    background: #374151;
+    border-bottom: 2px solid #3b82f6
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+    font-size: 18px;
+}
+
+.result {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.heatmap {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 6px;
+}
+
+.key {
+    padding: 8px;
+    background: #111827;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.key.low {
+    background: #22c55e
+}
+
+.key.mid {
+    background: #f97316
+}
+
+.key.hot {
+    background: #ef4444
+}

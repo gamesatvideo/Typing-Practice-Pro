@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Typing Practice - Settings</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Typing Practice</h1>
+
+        <div class="controls">
+
+            <select id="mode">
+                <option value="random">Random Words</option>
+                <option value="custom">Custom Paragraph</option>
+            </select>
+
+            <select id="fontSelect">
+                <option value="JetBrains Mono">English</option>
+                <option value="Avaice">Tamil Avaice</option>
+            </select>
+
+            <select id="timeSelect">
+                <option value="60">1 Minute</option>
+                <option value="180">3 Minutes</option>
+                <option value="300">5 Minutes</option>
+            </select>
+
+            <label><input type="checkbox" id="voice"> Voice</label>
+            <label><input type="checkbox" id="hideText"> Hide Text</label>
+
+        </div>
+
+        <textarea id="customText" placeholder="Paste paragraph if using custom mode"></textarea>
+
+        <button onclick="startPractice()">Start Typing</button>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
