@@ -3,11 +3,11 @@ const words = [
     "it", "for", "not", "on", "with", "he", "as", "you", "do", "at"
 ];
 
-const keyboardKeys = [
-    "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=",
-    "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]",
-    "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
-    "z", "x", "c", "v", "b", "n", "m", ",", ".", "/"
+const keyboardLayout = [
+    ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="],
+    ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]"],
+    ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'"],
+    ["z", "x", "c", "v", "b", "n", "m", ",", ".", "/"]
 ];
 
 let text = "";
@@ -256,20 +256,30 @@ if (document.getElementById("heatmap")) {
         "Accuracy: " + data.accuracy + "% | Errors: " + data.errors;
 
     const map = document.getElementById("heatmap");
+    map.innerHTML = "";
 
-    keyboardKeys.forEach(key => {
+    keyboardLayout.forEach(row => {
 
-        let div = document.createElement("div");
-        div.className = "key";
-        div.textContent = key;
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "keyboardRow";
 
-        let val = data.keyMistakes[key] || 0;
+        row.forEach(key => {
 
-        if (val > 5) div.classList.add("hot");
-        else if (val > 2) div.classList.add("mid");
-        else if (val > 0) div.classList.add("low");
+            const div = document.createElement("div");
+            div.className = "key";
+            div.textContent = key;
 
-        map.appendChild(div);
+            let val = data.keyMistakes[key] || 0;
+
+            if (val > 5) div.classList.add("hot");
+            else if (val > 2) div.classList.add("mid");
+            else if (val > 0) div.classList.add("low");
+
+            rowDiv.appendChild(div);
+
+        });
+
+        map.appendChild(rowDiv);
 
     });
 
