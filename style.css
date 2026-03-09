@@ -110,13 +110,13 @@ button {
 }
 
 .key.low {
-    background: #22c55e;
+    background: #ff9292;
 }
 
 .key.mid {
-    background: #f97316;
+    background: #f65656;
 }
 
 .key.hot {
-    background: #ef4444;
+    background: #ff0000;
 }

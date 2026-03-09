@@ -10,6 +10,13 @@ const keyboardLayout = [
     ["z", "x", "c", "v", "b", "n", "m", ",", ".", "/"]
 ];
 
+const shiftKeyboardLayout = [
+    ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+"],
+    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{", "}"],
+    ["A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\""],
+    ["Z", "X", "C", "V", "B", "N", "M", "<", ">", "?"]
+];
+
 let text = "";
 let wordsList = [];
 let currentWordIndex = 0;
@@ -178,8 +185,7 @@ if (document.getElementById("typingInput")) {
 
                         errors++;
 
-                        let expectedKey = spans[i].innerText.toLowerCase();
-
+                        let expectedKey = spans[i].innerText;
                         trackMistake(expectedKey);
 
                         spans[i].dataset.error = "1";
@@ -221,7 +227,12 @@ function trackMistake(key) {
 
     if (!key) return;
 
-    keyMistakes[key] = (keyMistakes[key] || 0) + 1;
+    if (keyMistakes[key]) {
+        keyMistakes[key]++;
+    }
+    else {
+        keyMistakes[key] = 1;
+    }
 
 }
 
@@ -304,6 +315,42 @@ if (document.getElementById("heatmap")) {
     map.innerHTML = "";
 
     keyboardLayout.forEach(row => {
+
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "keyboardRow";
+
+        row.forEach(key => {
+
+            const div = document.createElement("div");
+            div.className = "key";
+            div.textContent = key;
+
+            let val = data.keyMistakes[key] || 0;
+
+            if (val > 5) div.classList.add("hot");
+            else if (val > 2) div.classList.add("mid");
+            else if (val > 0) div.classList.add("low");
+
+            rowDiv.appendChild(div);
+
+        });
+
+        map.appendChild(rowDiv);
+
+    });
+
+}
+
+/* SHIFT HEATMAP */
+
+if (document.getElementById("shiftHeatmap")) {
+
+    const data = JSON.parse(localStorage.getItem("typingResult"));
+
+    const map = document.getElementById("shiftHeatmap");
+    map.innerHTML = "";
+
+    shiftKeyboardLayout.forEach(row => {
 
         const rowDiv = document.createElement("div");
         rowDiv.className = "keyboardRow";
