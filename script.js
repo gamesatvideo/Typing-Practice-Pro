@@ -58,21 +58,19 @@ function speakWord(word) {
 
     const msg = new SpeechSynthesisUtterance(word);
 
-    msg.rate = 0.6;   // slower
+    msg.rate = 0.6;
     msg.pitch = 1;
     msg.volume = 1;
 
-    // choose best English voice
     const voice = voices.find(v =>
         v.lang === "en-US" || v.name.includes("Google")
     );
 
-    if (voice) {
-        msg.voice = voice;
-    }
+    if (voice) msg.voice = voice;
 
     speechSynthesis.cancel();
     speechSynthesis.speak(msg);
+
 }
 
 if (document.getElementById("typingInput")) {
@@ -131,38 +129,62 @@ if (document.getElementById("typingInput")) {
 
         totalKeys++;
 
-        const spans = document.querySelectorAll("#textDisplay span");
+        /* HIDE TEXT MODE */
 
-        for (let i = 0; i < spans.length; i++) {
+        if (settings.hideText) {
 
-            let char = typed[i];
+            let i = typed.length - 1;
 
-            spans[i].classList.remove("current");
+            if (i >= 0 && typed[i] !== text[i]) {
 
-            if (char == null) {
+                errors++;
 
-                spans[i].className = "";
-                if (i === typed.length) spans[i].classList.add("current");
+                let expectedKey = text[i].toLowerCase();
 
-            }
-            else if (char === spans[i].innerText) {
-
-                spans[i].className = "correct";
+                trackMistake(expectedKey);
 
             }
-            else {
 
-                spans[i].className = "wrong";
+        }
 
-                if (!spans[i].dataset.error) {
+        /* NORMAL MODE */
 
-                    errors++;
+        else {
 
-                    let expectedKey = spans[i].innerText.toLowerCase();
+            const spans = document.querySelectorAll("#textDisplay span");
 
-                    trackMistake(expectedKey);
+            for (let i = 0; i < spans.length; i++) {
 
-                    spans[i].dataset.error = "1";
+                let char = typed[i];
+
+                spans[i].classList.remove("current");
+
+                if (char == null) {
+
+                    spans[i].className = "";
+                    if (i === typed.length) spans[i].classList.add("current");
+
+                }
+                else if (char === spans[i].innerText) {
+
+                    spans[i].className = "correct";
+
+                }
+                else {
+
+                    spans[i].className = "wrong";
+
+                    if (!spans[i].dataset.error) {
+
+                        errors++;
+
+                        let expectedKey = spans[i].innerText.toLowerCase();
+
+                        trackMistake(expectedKey);
+
+                        spans[i].dataset.error = "1";
+
+                    }
 
                 }
 
@@ -269,6 +291,8 @@ function finishTest() {
 
 }
 
+/* HEATMAP */
+
 if (document.getElementById("heatmap")) {
 
     const data = JSON.parse(localStorage.getItem("typingResult"));
@@ -305,6 +329,8 @@ if (document.getElementById("heatmap")) {
     });
 
 }
+
+/* HISTORY */
 
 if (document.getElementById("history")) {
 
