@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Typing Trainer - Settings</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="settings.css">
 
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
 
@@ -13,38 +13,65 @@
 
 <body>
 
-    <div class="container">
+    <div class="settingsCard">
 
         <h1>Typing Trainer</h1>
 
-        <div class="controls">
+        <div class="section">
 
-            <select id="mode">
-                <option value="random">Random Words</option>
-                <option value="custom">Custom Paragraph</option>
-            </select>
+            <label>Mode</label>
 
-            <select id="fontSelect">
-                <option value="JetBrains Mono">English</option>
-                <option value="Avaice">Tamil Avaice</option>
-            </select>
+            <div class="controls">
+                <select id="mode">
+                    <option value="random">Random Words</option>
+                    <option value="custom">Custom Paragraph</option>
+                </select>
 
-            <select id="timeSelect">
-                <option value="10">10 Seconds</option>
-                <option value="30">30 Seconds</option>
-                <option value="60">1 Minute</option>
-                <option value="180">3 Minutes</option>
-                <option value="300">5 Minutes</option>
-            </select>
+                <select id="fontSelect">
+                    <option value="JetBrains Mono">English</option>
+                    <option value="Avaice">Tamil Avaice</option>
+                </select>
 
-            <label><input type="checkbox" id="voice"> Voice</label>
-            <label><input type="checkbox" id="hideText"> Hide Text</label>
+                <select id="timeSelect">
+                    <option value="10">10 Seconds</option>
+                    <option value="30">30 Seconds</option>
+                    <option value="60">1 Minute</option>
+                    <option value="180">3 Minutes</option>
+                    <option value="300">5 Minutes</option>
+                </select>
+            </div>
 
         </div>
 
-        <textarea id="customText" placeholder="Paste paragraph if using custom mode"></textarea>
+        <div class="section">
 
-        <button onclick="startPractice()">Start Typing</button>
+            <label>Options</label>
+
+            <div class="controls">
+
+                <label class="toggle">
+                    <input type="checkbox" id="voice">
+                    Voice Dictation
+                </label>
+
+                <label class="toggle">
+                    <input type="checkbox" id="hideText">
+                    Hide Text Mode
+                </label>
+
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <label>Custom Paragraph</label>
+
+            <textarea id="customText" placeholder="Paste paragraph here..."></textarea>
+
+        </div>
+
+        <button class="startBtn" onclick="startPractice()">Start Typing</button>
 
     </div>
 

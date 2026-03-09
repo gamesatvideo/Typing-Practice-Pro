@@ -48,14 +48,31 @@ function startPractice() {
 
 }
 
+let voices = [];
+
+speechSynthesis.onvoiceschanged = () => {
+    voices = speechSynthesis.getVoices();
+};
+
 function speakWord(word) {
 
     const msg = new SpeechSynthesisUtterance(word);
-    msg.rate = 0.7;
+
+    msg.rate = 0.6;   // slower
+    msg.pitch = 1;
+    msg.volume = 1;
+
+    // choose best English voice
+    const voice = voices.find(v =>
+        v.lang === "en-US" || v.name.includes("Google")
+    );
+
+    if (voice) {
+        msg.voice = voice;
+    }
 
     speechSynthesis.cancel();
     speechSynthesis.speak(msg);
-
 }
 
 if (document.getElementById("typingInput")) {
@@ -241,6 +258,10 @@ function finishTest() {
         wpm: document.getElementById("wpm").textContent,
         kpm: document.getElementById("kpm").textContent
     });
+
+    if (history.length > 20) {
+        history.shift();
+    }
 
     localStorage.setItem("typingHistory", JSON.stringify(history));
 

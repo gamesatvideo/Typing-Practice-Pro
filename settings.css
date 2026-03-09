@@ -1,0 +1,94 @@
+@font-face {
+    font-family: "Avaice";
+    src: url("Avaice Font.ttf");
+}
+
+body {
+    margin: 0;
+    background: #111827;
+    color: white;
+    font-family: "JetBrains Mono", monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.settingsCard {
+    width: 700px;
+    max-width: 90%;
+    background: #1f2937;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .5);
+}
+
+h1 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+.section {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    opacity: .8;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+select {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background: #111827;
+    color: white;
+    font-family: inherit;
+}
+
+textarea {
+    width: 100%;
+    height: 120px;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background: #111827;
+    color: white;
+    font-family: inherit;
+    resize: none;
+}
+
+.toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #111827;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.startBtn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    background: #22c55e;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.startBtn:hover {
+    background: #16a34a;
+}
